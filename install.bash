@@ -16,8 +16,7 @@ sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop
 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws
-wstool init src https://raw.githubusercontent.com/asmodehn/rostful/kinetic/rosinstall/kinetic.rosinstall
-rosdep update
+cd src && git clone https://github.com/benkehoe/rostful && cd ..
 rosdep install --from-paths src --ignore-src -y
 catkin_make
 echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
