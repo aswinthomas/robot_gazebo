@@ -1,6 +1,6 @@
 # robot_gazebo_install
 
-## Installation on vbox
+## Robot installation on VM
 
 - Create a virtualbox (or similar) with ubuntu 16.04 64bit
 - Under the VM manager set the network to bridged adaptor so it appears like its two different machines
@@ -9,7 +9,7 @@
 mkdir -p ~/catkin_ws/src && cd src
 git clone https://github.com/aswinthomas/robot_gazebo_install
 ```
-- Then run ```./install.bash```
+- Then run ```./install_robot.bash```
 
 ## Running server on VM
 
