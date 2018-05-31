@@ -9,7 +9,7 @@
 mkdir -p ~/catkin_ws/src && cd src
 git clone https://github.com/aswinthomas/robot_gazebo_install
 ```
-- Then run ```./install.sh```
+- Then run ```./install.bash```
 
 ## Running server on VM
 
