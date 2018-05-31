@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
+    <arg name="config" value="front_laser"/>
+    <arg name="gui" value="false"/> 
+    <arg name="headless" value="true" />
+  </include>
+
+  <include file="$(find robot_gazebo_install)/launch/rostful_server.launch">
+    <arg name="rostful_bind" value="172.16.24.108" />
+    <arg name="topics" value="/jackal_velocity_controller/odom /jackal_velocity_controller/cmd_vel" />
+    <arg name="publishes" value="/jackal_velocity_controller/odom" />
+    <arg name="subscribes" value="/jackal_velocity_controller/cmd_vel" />
+    <arg name="services" value="[]" />
+  </include>
+
+</launch>

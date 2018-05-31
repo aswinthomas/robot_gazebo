@@ -12,9 +12,6 @@ rosdep update
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop 
-#sudo apt-fast -y install ros-kinetic-rostful -- does not seem to work
-
-sudo pip install rostful pyros
 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws

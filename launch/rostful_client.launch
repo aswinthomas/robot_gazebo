@@ -7,7 +7,7 @@
   <!-- <arg name="rostful_config" default=""/> -->
 
   <!-- TODO : move these out of here, they depend on pyros and underlayed system -->
-  <arg name="topics" default="['turtle1/pose']" />
+  <arg name="topics" default="[]" />
   <arg name="services" default="[]" />
   <arg name="params" default="[]" />
   <arg name="enable_cache" default="false"/>  <!-- since connection_cache is not widely known&used, dont expect it by default -->
@@ -20,14 +20,11 @@
   <!-- TODO : better default when installed -->
 
   <!-- rostful dev server -->
-  <node pkg="rostful" name="rostful-server" type="server" args="-h $(arg rostful_bind) -p $(arg rostful_port) -s $(arg rostful_server) -c $(arg configfile) -l $(arg logfile)">
-    <param name="topics" value="$(arg topics)" type="str" />
-    <param name="services" value="$(arg services)" type="str" />
-    <param name="params" value="$(arg params)" type="str" />
-    <param name="enable_cache" value="$(arg enable_cache)" type="bool" />
-    <!-- remapping subscriber to plug into connection cache -->
+  <node pkg="rostful" name="rostfulclient" type="client" args="--allow-subscription --publish-interval 10 --binary " output="screen">
+    <!--<param name="enable_cache" value="$(arg enable_cache)" type="bool" />
+
     <remap from="~connections_list" to="$(arg connection_cache_list)"/>
-    <remap from="~connections_diff" to="$(arg connection_cache_diff)"/>
+    <remap from="~connections_diff" to="$(arg connection_cache_diff)"/>-->
   </node>
 
 </launch>

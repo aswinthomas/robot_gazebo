@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rostful_bind" default="127.0.0.1"/>
+  <arg name="rostful_port" default="8080"/>
+
+  <arg name="topics" default="[]" />
+  <arg name="services" default="[]" />
+  <arg name="publishes" default="[]" />
+  <arg name="subscribes" default="[]"/>  
+  
+  <!-- rostful dev server -->
+  <node pkg="rostful" name="rostfulserver" type="server" args="--host $(arg rostful_bind) -p $(arg rostful_port) --topics $(arg topics) --services $(arg services) --publishes $(arg publishes) --subscribes $(arg subscribes)" output="screen">
+  </node>
+
+</launch>
+
+
