@@ -15,7 +15,7 @@ git clone https://github.com/aswinthomas/robot_gazebo_install
 
 ```roslaunch server_services.launch```
 
-Note that you need to set your external IP in this launch file. Assume this is 172.16.24.108
+Note that you need to set your external IP in this launch file. Assume this is 172.16.24.108. Gazebo might take a few minutes to launch if you are running this for the first time.
 
 ## Running a web browser client on your host
 
