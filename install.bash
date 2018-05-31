@@ -8,5 +8,6 @@ sudo apt -y install apt-fast
 sudo apt-fast -y install ros-kinetic-desktop-full
 sudo rosdep init
 rosdep update
-sudo apt-fast -y install ros-kinetic-husky-simulator
+sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop 
+sudo apt-fast -y install ros-kinetic-rostful
 
