@@ -12,5 +12,14 @@ rosdep update
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop 
-sudo apt-fast -y install ros-kinetic-rostful
+#sudo apt-fast -y install ros-kinetic-rostful -- does not seem to work
+
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws
+wstool init src https://raw.githubusercontent.com/asmodehn/rostful/kinetic/rosinstall/kinetic.rosinstall
+rosdep update
+rosdep install --from-paths src --ignore-src -y
+catkin_make
+echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 
