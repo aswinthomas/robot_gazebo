@@ -8,8 +8,7 @@
   </include>
 
   <include file="$(find robot_gazebo_install)/launch/rostful.launch">
-    <arg name="topics" value="['/odometry/filtered', '/cmd_vel']" />
-    <arg name="services" value="[]" />
+    <arg name="url" value="http://172.16.24.108:8080" />
   </include>
 
 </launch>

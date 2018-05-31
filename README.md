@@ -20,7 +20,7 @@ Note that you need to set your external IP in this launch file. Assume this is 1
 ## Running a web browser client on your host
 
 ### Viewing odom
-Run ```http://172.16.24.108:8080/jackal_velocity_controller/odom``` on your browser.
+Run ```http://172.16.24.108:8080/jackal_velocity_controller/odom``` on your host browser.
 
 ### Sending cmd_vel
 On your VM view the odom so you can see if the robot is moving
