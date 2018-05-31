@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-
-  <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
-    <arg name="config" value="front_laser"/>
-    <arg name="gui" value="false"/> 
-    <arg name="headless" value="true" />
-  </include>
-
   <include file="$(find robot_gazebo_install)/launch/rostful.launch">
     <arg name="url" value="http://172.16.24.108:8080" />
   </include>
