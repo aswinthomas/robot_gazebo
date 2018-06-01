@@ -8,7 +8,25 @@
   </include>
 
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
-     <arg name="port" value="8080"/>
+    <arg name="port" default="9090" />
+    <arg name="address" default="localhost" />
+    <arg name="ssl" default="false" />
+    <arg name="certfile" default=""/>
+    <arg name="keyfile" default="" />
+
+    <arg name="retry_startup_delay" default="5" />
+
+    <arg name="fragment_timeout" default="600" />
+    <arg name="delay_between_messages" default="0" />
+    <arg name="max_message_size" default="None" />
+    <arg name="unregister_timeout" default="10" />
+
+    <arg name="authenticate" default="false" />
+
+    <arg name="topics_glob" default="/jackal_velocity_controller/odom /jackal_velocity_controller/cmd_vel" />
+    <arg name="services_glob" default="[*]" />
+    <arg name="params_glob" default="[*]" />
+    <arg name="bson_only_mode" default="false" />
   </include>
 
 </launch>
