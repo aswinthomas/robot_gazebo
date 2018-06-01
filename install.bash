@@ -12,11 +12,12 @@ rosdep update
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop 
+sudo apt-fast -y install ros-kinetic-rosbridge-suite ros-kinetic-web-video-server
 
 mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws
-cd src && git clone https://github.com/benkehoe/rostful && cd ..
-rosdep install --from-paths src --ignore-src -y
+cd ~/catkin_ws/src
+git clone https://github.com/RobotWebTools/webrtc_ros
+cd ..
 catkin_make
 echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
