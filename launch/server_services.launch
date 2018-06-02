@@ -23,10 +23,20 @@
 
     <arg name="authenticate" default="false" />
 
-    <arg name="topics_glob" default="/jackal_velocity_controller/odom /jackal_velocity_controller/cmd_vel" />
+    <arg name="topics_glob" default="[*]" />
+<!--'/jackal_velocity_controller/odom' '/jackal_velocity_controller/cmd_vel' /front/scan /tf2_web_republisher/goal /tf2_web_republisher/cancel /tf2_web_republisher/feedback-->
     <arg name="services_glob" default="[*]" />
     <arg name="params_glob" default="[*]" />
     <arg name="bson_only_mode" default="false" />
   </include>
 
+
+  <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher" output="screen" />
+  <rosparam param="use_gui">true</rosparam>
+  <!--<node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />-->
+
+  
+
+
 </launch>
+
