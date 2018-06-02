@@ -20,9 +20,10 @@
     // Create the main viewer.
     var viewer = new ROS3D.Viewer({
       divID : 'viewer',
-      width : 800,
-      height : 600,
-      antialias : true
+      width : 2000,
+      height : 700,
+      antialias : true,
+      background : '#efefef'
     });
     // Add a grid.
     viewer.addObject(new ROS3D.Grid());
@@ -48,17 +49,18 @@
       tfClient : tfClient,
       path : 'http://resources.robotwebtools.org/',
       rootObject : viewer.scene,
+      loader : ROS3D.COLLADA_LOADER 
     });
   }
 </script>
 </head>
 
 <body onload="init()">
-  <h1>Cognicept Operator Page</h1>
-  <p>Run the following commands in the robot and refresh this page</p>
+  <h1>                            Cognicept Operator Page</h1>
+  <!--<p>Run the following commands in the robot and refresh this page</p>
   <ol>
     <li><tt>roslaunch robot_gazebo_install server_services</tt></li>
-  </ol>
+  </ol>-->
   <div id="viewer"></div>
 </body>
 </html>
