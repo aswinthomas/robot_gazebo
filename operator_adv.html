@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cognicept Operator Page</title>
+    <meta charset="utf-8" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="-1">
+    <meta http-equiv="refresh" content="300">
+
+    <!-- The default styling is provided by http://getbootstrap.com -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+
+    <!-- jQuery and display.js are conveniences for interacting with the DOM -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+
+
+    <!-- ROSLIBJS -->
+    <!-- EventEmitter2 is the sole dependency of roslibjs -->
+<script src="https://static.robotwebtools.org/EventEmitter2/0.4.14/eventemitter2.min.js"></script>
+    <!-- Roslibjs handles core ROS functionality in the browser -->
+<script src="https://static.robotwebtools.org/roslibjs/0.20.0/roslib.min.js"></script>
+
+    <!-- ROS2DJS -->
+    <!-- EaselJS is a dependency of ros2djs -->
+    <script src="ros2djs/include/EaselJS/easeljs.js"></script>
+    <!-- Ros2djs provides 2D scene support, including mapping and more -->
+    <script src="ros2djs/build/ros2d.js"></script>
+
+    <!-- ROS3DJS -->
+    <!-- Three.js is the WebGL rendering library -->
+    <!--<script src="ros3djs/include/threejs/three.js"></script>-->
+    <script src="https://static.robotwebtools.org/threejs/r88/three.min.js"></script>
+    <!-- ColladaLoader2 loads collada models of the robot -->
+    <script src="https://static.robotwebtools.org/ros3djs/0.18.0/ColladaLoader.js"></script>
+    <script src="https://static.robotwebtools.org/threejs/r88/STLLoader.js"></script>
+
+    <!-- Ros3djs provides 3D scene support, including mapping and more -->
+
+    <script src="https://static.robotwebtools.org/ros3djs/current/ros3d.min.js"></script>
+    <!--<script src="../ros3djs/build/ros3d.min.js"></script>-->
+    
+    <script type="text/javascript" src="mjpegcanvasjs/build/mjpegcanvas.min.js"></script>
+    <script type="text/javascript" src="keyboardteleopjs/build/keyboardteleop.min.js"></script>
+    <script type="text/javascript" src="js/ptu_keyboardteleop.js"></script>
+
+    <script type="text/javascript">
+      var hostname = 'localhost';
+
+      /**
+      * Setup all GUI elements when the page is loaded.
+      */
+      function init() {
+      // Connecting to ROS.
+      var ros = new ROSLIB.Ros({
+      url : 'ws://'+hostname+':9090'
+      });
+ 
+      // ----------------------------------------------------------------------
+      // Subscribing to the robot's Pose
+      // ----------------------------------------------------------------------
+
+      // The ROSLIB.Topic handles subscribing and publishing a ROS topic. This
+      // topic interacts with the perfect odom provided by Gazebo.
+      var poseTopic = new ROSLIB.Topic({
+      ros         : ros,
+      name        : '/odometry/filtered',
+      messageType : 'nav_msgs/Odometry'
+      });
+
+
+        // ----------------------------------------------------------------------
+        // Create the camera viewer.
+        // ----------------------------------------------------------------------
+
+
+        var viewer = new MJPEGCANVAS.Viewer({
+        divID : 'mjpeg',
+        host : hostname,
+        port : '80/video',
+        width : 560,
+        height : 420,
+        topic : '/output_video'
+        });
+        
+        
+        // ----------------------------------------------------------------------
+        // Rendering the robot in 3D
+        // ----------------------------------------------------------------------
+
+        // Create the scene manager and view port for the 3D world.
+        var viewer3D = new ROS3D.Viewer({
+        divID      : 'threed-map',
+        width      : 560,
+        height     : 420,
+        antialias  : true,
+        background : '#EEEEEE'
+        });
+
+ // Add a grid.
+    viewer3D.addObject(new ROS3D.Grid());
+
+        // Create a TF client that subscribes to the fixed frame.
+        var tfClient = new ROSLIB.TFClient({
+        ros          : ros,
+        angularThres : 0.1,
+        transThres   : 0.1,
+        rate         : 1.0,
+        //fixedFrame   : '/base_link'
+        });
+
+
+        // Add the URDF model of the robot.
+        var urdfClient = new ROS3D.UrdfClient({
+        ros        : ros,
+        tfClient   : tfClient,
+        rootObject : viewer3D.scene
+        });
+
+        var laserClient = new ROS3D.LaserScan({
+          ros: ros,
+          tfClient: tfClient,
+          rootObject: viewer.scene,
+          topic: '/front/scan',
+          material: { size: 0.05, color: 0xff0000 }
+        });
+
+        var colorMaterial = ROS3D.makeColorMaterial(1, 0, 0,0.5);
+
+        // Track robot pose with an arrow
+        var arrowNode = new ROS3D.SceneNode({
+        tfClient : tfClient,
+        frameID  : '/base_link',
+        object   : new ROS3D.Arrow({
+        length : 0.3,
+        material : colorMaterial
+        }),        
+        });
+
+        viewer3D.scene.add(arrowNode);
+
+
+    
+
+
+        // ----------------------------------------------------------------------
+        // Rendering the map in 3D
+        // ----------------------------------------------------------------------
+
+        /*// Add the Occupancy Grid map.
+        var grid = new ROS3D.OccupancyGridClient({
+        ros        : ros,
+        tfClient   : tfClient,
+        rootObject : viewer3D.scene
+        });
+        grid.on('change', function() {
+        // Change the opacity level.
+        grid.currentGrid.children[0].material.transparent = false;
+        grid.currentGrid.children[0].material.opacity = 0.85;
+        grid.currentGrid.children[0].material.needsUpdate = true;
+        });*/
+        }
+    </script>
+  </head>
+
+  <body onload="init()">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <a class="navbar-brand" href="#"><img src="cognicept.png"/></a>      
+      <ul class="nav pull-right">
+        <li class="active"><a href="operator.html">Operator Control Panel</a></li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="row">
+      <!--<h1><small>Simple keyboard control</small></h1>-->
+      <div class="row">
+        <div class="col-span-6">
+          <h2><small>Robot</small></h2>
+          <ul>
+            <li><strong>w/s</strong>  to move forward and backward</li>
+            <li><strong>a/d</strong>  to move left and right</li>
+          </ul>
+        </div>
+        <div class="col-span-6">
+          <h2><small>PTU</small></h2>
+          <ul>
+            <li><strong>j/k</strong>  to move the PTU down and up</li>
+            <li><strong>h/l</strong>  to move the PTU left and right</li>
+            <li><strong>o</strong>    to move the PTU to the default pose</li>
+          </ul>
+        </div>
+      </div>
+	
+      <div id="speed-label"></div>
+      <div id="speed-slider"></div>
+
+
+      <div class="row">
+        <div class="col-span-6">
+          <h1><small>3D map</small></h1>
+          <div id="threed-map"></div>
+	  <i>Use your mouse to navigate the map</i>
+        </div>
+        <div class="col-span-6">
+          <h1><small>Robot camera</small></h1>
+          <div id="mjpeg"></div>
+	  <i>Description</i>
+        </div>
+      </div>
+
+
+      <!-- Pose Table
+      <div class="row" id="pose-data">
+        <div class="col-span-12">
+          <h1><small>Robot's Pose</small></h1>
+          <table id="poses" class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Position</th>
+                <th>Orientation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+ -->
+      
+    </div>
+
+  </body>
+</html>
