@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find indoor_localization)/launch/jackal_world.launch" >
+  <!--<include file="$(find indoor_localization)/launch/jackal_world.launch" >
     <arg name="config" value="front_laser"/>
     <arg name="gui" value="false"/> 
     <arg name="headless" value="true" />
-  </include>
+  </include>-->
+
+  <include file="$(find indoor_localization)/launch/simulation.launch" />
+
+  <include file="$(find indoor_localization)/launch/move_base.launch" />
 
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
     <arg name="port" default="9090" />
