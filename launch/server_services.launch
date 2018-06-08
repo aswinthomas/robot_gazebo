@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
+  <include file="$(find indoor_localization)/launch/jackal_world.launch" >
     <arg name="config" value="front_laser"/>
     <arg name="gui" value="false"/> 
     <arg name="headless" value="true" />

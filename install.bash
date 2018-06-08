@@ -11,27 +11,21 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-sudo apt-fast -y install ros-kinetic-jackal-simulator ros-kinetic-jackal-desktop 
-sudo apt-fast -y install ros-kinetic-rosbridge-suite ros-kinetic-tf2-web-republisher
-sudo apt-fast -y install ros-kinetic-laser-assembler
-sudo apt-fast -y install nodejs nodejs-legacy npm
-sudo npm install -g grunt-cli
-sudo rm -rf ~/.npm ~/tmp
+sudo apt-fast -y install ros-kinetic-turtlebot ros-kinetic-turtlebot ros-kinetic-turtlebot-gazebo
+sudo apt-fast -y install ros-kinetic-turtlebot-apps ros-kinetic-turtlebot-rviz-launchers
+sudo apt-fast -y install ros-kinetic-rosbridge-suite 
+
 
 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-#git clone -b update-to-chrome-59-api https://github.com/fkie-forks/webrtc_ros
-#sed -i -e "/--revision $WEBRTC_REVISION/d" webrtc_ros/webrtc/checkout_source.sh
-git clone https://github.com/RobotWebTools/ros3djs
+git clone https://bitbucket.org/osrf/ariac -b ariac_2017
 cd ..
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 catkin build
-echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/catkin_ws/install/setup.bash" >> ~/.bashrc
+ROBOT_INITIAL_POSE="-x 9 -y 2 -z 0 -R 0 -P 0 -Y 3.14"
 source ~/.bashrc
-
-cd src/ros3djs
-npm install .
 
 
 
