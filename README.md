@@ -4,12 +4,13 @@
 
 - Create a virtualbox (or similar) with ubuntu 16.04 64bit
 - Under the VM manager set the network to bridged adaptor so it appears like its two different machines
-- Install git ```sudo apt install git``` and clone this repo
+- Clone and install dependencies
 ```
-mkdir -p ~/catkin_ws/src && cd src
+sudo apt -y install git
+mkdir -p ~/catkin_ws/src && cd ~/catkin_ws/src
 git clone https://github.com/aswinthomas/robot_gazebo_install
+cd robot_gazebo_install && ./install.bash
 ```
-- Then run ```./install.bash```
 
 ## Running server on VM
 

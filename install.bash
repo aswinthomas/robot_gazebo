@@ -28,8 +28,10 @@ sudo apt-fast -y install ros-kinetic-rosbridge-suite
 # ROS dependencies
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
+
 # clone any catkin packages here
 cd ..
+catkin config --extend /opt/ros/kinetic
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 catkin install
 catkin build 
