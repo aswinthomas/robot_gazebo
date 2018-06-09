@@ -4,8 +4,8 @@
    <!-- Start gazebo with robot -->
   <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
     <arg name="config" value="front_laser"/>
-    <arg name="gui" value="false"/> 
-    <arg name="headless" value="true" />
+    <arg name="gui" value="true"/> 
+    <arg name="headless" value="false" />
   </include>
 
   <!-- Start odom-only nav stack -->
