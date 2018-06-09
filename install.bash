@@ -37,7 +37,7 @@ catkin install
 catkin build 
 
 USER_SOURCE_SCRIPT="source ~/catkin_ws/install/setup.bash"
-if grep -qF "$USER_SOURCE_SCRIPT" BASHRC;then
+if grep -qF "$USER_SOURCE_SCRIPT" $BASHRC;then
    echo "user setup.bash already exists"
 else
    echo "Adding user setup.bash to bashrc"
@@ -45,15 +45,15 @@ else
 fi
 
 IP="ROS_IP=192.168.0.0" # replace with your computer IP where you will install this script
-if grep -qF "$POSE" BASHRC;then
-   echo "robot initial pose exists"
+if grep -qF "$POSE" $BASHRC;then
+   echo "ROS_IP exists"
 else
-   echo "Adding robot initial pose to bashrc"
+   echo "Adding ROS_IP to bashrc"
    echo $POSE >> $BASHRC
 fi
 
 URI="ROS_MASTER_URI=http://192.168.0.0:11311/" # replace with robot IP
-if grep -qF "$URI" BASHRC;then
+if grep -qF "$URI" $BASHRC;then
    echo "robot uri exists"
 else
    echo "Adding robot uri to bashrc"
