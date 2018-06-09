@@ -21,4 +21,19 @@
       Tool for planting flags on the ground plane in rviz.
     </description>
   </class>
+  <class name="rviz_plugin_tutorials/StartSim"
+         type="rviz_plugin_tutorials::StartSimTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Button to start Sim
+    </description>
+  </class>
+  <class name="rviz_plugin_tutorials/ContinueSim"
+         type="rviz_plugin_tutorials::ContinueSimTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Button to Continue Sim
+    </description>
+  </class>
 </library>
+
