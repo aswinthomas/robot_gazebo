@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
+roslaunch jackal_navigation odom_navigation_demo.launch
+
   <arg name="gui"        default="true"/>
   <arg name="world_file" default="$(env TURTLEBOT_GAZEBO_WORLD_FILE)"/>
 

@@ -1,0 +1,417 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="ariac">
+    <!-- Set the initial camera pose to be looking at the workspace. -->
+    <gui>
+      <camera name="user_camera">
+        <pose>-4.33 1.88 6.11 0 0.9 -0.27</pose>
+      </camera>
+    </gui>
+
+
+    <!-- Disable shadows. -->
+    <scene>
+      <shadows>false</shadows>
+    </scene>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- A directed light source -->
+    <light name="camera_spot_light" type='spot'>
+      <pose>-10 10 10 0 -1 -0.8</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0 0 -1</direction>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>1</outer_angle>
+        <falloff>1</falloff>
+      </spot>
+    </light>
+
+    <!-- the workcell -->
+    <include>
+      <uri>model://workcell</uri>
+      <pose>0 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <name>bin8</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-0.3 0.995 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin5</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-0.3 -1.33 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin4</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-1.0 0.995 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin7</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-0.3 0.23 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin6</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-0.3 -0.535 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin1</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-1.0 -1.33 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin3</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-1.0 0.23 0 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bin2</name>
+      <uri>model://workcell_bin</uri>
+      <pose>-1.0 -0.535 0 0 0 1.5708</pose>
+    </include>
+
+
+    <!-- a wall to delete objects at the end of the belt -->
+    <include>
+      <uri>model://deletion_wall</uri>
+      <pose>1.2 -4.1 1.41 0 0 1.5708</pose>
+    </include>
+
+
+
+
+
+
+    <!-- AGV1 -->
+    <model name="agv1">
+      <pose>0.3 3.3 0 0 0 3.14159</pose>
+      <include>
+        <name>agv1</name>
+        <uri>model://warehouse_robot_ariac</uri>
+      </include>
+      <plugin name="agv_plugin" filename="libROSAGVPlugin.so">
+        <submit_tray_service_name>/ariac/submit_tray</submit_tray_service_name>
+        <clear_tray_service_name>/ariac/kit_tray_1/clear_tray</clear_tray_service_name>
+        <lock_tray_service_name>/ariac/kit_tray_1/lock_models</lock_tray_service_name>
+        <index>1</index>
+      </plugin>
+
+      <!-- a tray for building kits -->
+      <!-- (this has to be in a model tag so logical cameras can detect it as a nested model) -->
+      <model name="kit_tray_1">
+        <pose>0.0 0.15 0.75 0 0 0</pose>
+        <include>
+          <name>kit_tray_1</name>
+          <uri>model://kit_tray_ariac</uri>
+        </include>
+        <plugin name="kit_tray_plugin" filename="libROSAriacKitTrayPlugin.so">
+          <contact_sensor_name>kit_tray_contact</contact_sensor_name>
+          <clear_tray_service_name>/ariac/kit_tray_1/clear_tray</clear_tray_service_name>
+          <lock_models_service_name>/ariac/kit_tray_1/lock_models</lock_models_service_name>
+          <update_rate>20</update_rate>
+          <faulty_parts>
+          </faulty_parts>
+        </plugin>
+      </model>
+
+      <!-- join the tray and agv -->
+      <joint name="agv_tray" type="fixed">
+          <parent>agv1::link</parent>
+          <child>kit_tray_1::kit_tray_1::tray</child>
+      </joint>
+    </model>
+
+    <model name="quality_control_sensor_1">
+      <pose>0.3 3.5 1.5 0 1.574 -1.574</pose>
+      <plugin name="ros_logical_camera" filename="libROSLogicalCameraPlugin.so">
+        <robotNamespace>ariac</robotNamespace>
+        <position_noise>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.001</stddev>
+          </noise>
+        </position_noise>
+        <orientation_noise>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </orientation_noise>
+        <known_model_names>
+        </known_model_names>
+      </plugin>
+      <link name="link">
+        <gravity>false</gravity>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.000166667</ixx>
+            <iyy>0.000166667</iyy>
+            <izz>0.000166667</izz>
+          </inertia>
+        </inertial>
+
+        <collision name="collision">
+          <pose>0 0.02 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://logical_camera/meshes/camera.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <pose>0 0.02 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://logical_camera/meshes/camera.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+
+        <sensor name="logical_camera" type="logical_camera">
+          <logical_camera>
+            <near>0.73</near>
+            <far>0.78</far>
+            <horizontal_fov>0.7</horizontal_fov>
+            <aspect_ratio>0.35</aspect_ratio>
+          </logical_camera>
+
+          <visualize>false</visualize>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+    <!-- AGV2 -->
+    <model name="agv2">
+      <pose>0.3 -3.3 0 0 0 0</pose>
+      <include>
+        <name>agv2</name>
+        <uri>model://warehouse_robot_ariac</uri>
+      </include>
+      <plugin name="agv_plugin" filename="libROSAGVPlugin.so">
+        <submit_tray_service_name>/ariac/submit_tray</submit_tray_service_name>
+        <clear_tray_service_name>/ariac/kit_tray_2/clear_tray</clear_tray_service_name>
+        <lock_tray_service_name>/ariac/kit_tray_2/lock_models</lock_tray_service_name>
+        <index>2</index>
+      </plugin>
+
+      <!-- a tray for building kits -->
+      <!-- (this has to be in a model tag so logical cameras can detect it as a nested model) -->
+      <model name="kit_tray_2">
+        <pose>0.0 0.15 0.75 0 0 0</pose>
+        <include>
+          <name>kit_tray_2</name>
+          <uri>model://kit_tray_ariac</uri>
+        </include>
+        <plugin name="kit_tray_plugin" filename="libROSAriacKitTrayPlugin.so">
+          <contact_sensor_name>kit_tray_contact</contact_sensor_name>
+          <clear_tray_service_name>/ariac/kit_tray_2/clear_tray</clear_tray_service_name>
+          <lock_models_service_name>/ariac/kit_tray_2/lock_models</lock_models_service_name>
+          <update_rate>20</update_rate>
+          <faulty_parts>
+          </faulty_parts>
+        </plugin>
+      </model>
+
+      <!-- join the tray and agv -->
+      <joint name="agv_tray" type="fixed">
+          <parent>agv2::link</parent>
+          <child>kit_tray_2::kit_tray_2::tray</child>
+      </joint>
+    </model>
+
+    <model name="quality_control_sensor_2">
+      <pose>0.3 -3.5 1.5 0 1.574 1.574</pose>
+      <plugin name="ros_logical_camera" filename="libROSLogicalCameraPlugin.so">
+        <robotNamespace>ariac</robotNamespace>
+        <position_noise>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.001</stddev>
+          </noise>
+        </position_noise>
+        <orientation_noise>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </orientation_noise>
+        <known_model_names>
+        </known_model_names>
+      </plugin>
+      <link name="link">
+        <gravity>false</gravity>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.000166667</ixx>
+            <iyy>0.000166667</iyy>
+            <izz>0.000166667</izz>
+          </inertia>
+        </inertial>
+
+        <collision name="collision">
+          <pose>0 0.02 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://logical_camera/meshes/camera.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <pose>0 0.02 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://logical_camera/meshes/camera.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+
+        <sensor name="logical_camera" type="logical_camera">
+          <logical_camera>
+            <near>0.73</near>
+            <far>0.78</far>
+            <horizontal_fov>0.7</horizontal_fov>
+            <aspect_ratio>0.35</aspect_ratio>
+          </logical_camera>
+
+          <visualize>false</visualize>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+
+    <!-- an invisible conveyor belt -->
+    <model name="conveyor_belt">
+
+      <model name="conveyor_belt_fixed">
+        <static>true</static>
+        <pose>1.21 5 0.8126 0 0 -1.57079</pose>
+        <link name="link">
+          <pose>0 0 0 0 0 0</pose>
+        </link>
+      </model>
+
+      <model name="conveyor_belt_moving">
+        <static>false</static>
+        <pose>1.21 -2 0.8126 0 0 -1.57079</pose>
+        <link name="belt">
+          <pose>-5 0 0 0 0 0</pose>
+          <inertial>
+            <inertia>
+              <ixx>3.8185</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1781.5</iyy>
+              <iyz>0</iyz>
+              <izz>1784.72</izz>
+            </inertia>
+            <mass>100</mass>
+          </inertial>
+          <!--Uncomment for debugging -->
+          <!--
+          <visual name="belt_visual">
+            <geometry>
+              <box>
+                <size>14.62206 0.65461 0.18862</size>
+              </box>
+            </geometry>
+          </visual>
+          -->
+          <collision name="belt_collision">
+            <geometry>
+              <box>
+                <size>14.62206 0.65461 0.18862</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode>
+                  <mu>1.0</mu>
+                  <mu2>1.0</mu2>
+                </ode>
+                <torsional>
+                  <coefficient>1000.0</coefficient>
+                  <patch_radius>0.1</patch_radius>
+                </torsional>
+              </friction>
+            </surface>
+          </collision>
+        </link>
+      </model>
+
+      <joint name="belt_joint" type="prismatic">
+        <parent>conveyor_belt_fixed::link</parent>
+        <child>conveyor_belt_moving::belt</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>1.0</upper>
+          </limit>
+        </axis>
+      </joint>
+
+      <plugin name="conveyor_belt_plugin" filename="libROSConveyorBeltPlugin.so">
+        <robot_namespace>/ariac</robot_namespace>
+        <population_rate_modifier_topic>/ariac/population/rate_modifier</population_rate_modifier_topic>
+        <link>conveyor_belt::conveyor_belt_moving::belt</link>
+        <power>0</power>
+      </plugin>
+    </model>
+
+
+    <!-- The NIST-ARIAC task manager -->
+    <plugin filename="libROSAriacTaskManagerPlugin.so" name="task_manager">
+      <robot_namespace>ariac</robot_namespace>
+      <competition_time_limit>500</competition_time_limit>
+      <start_competition_service_name>/ariac/start_competition</start_competition_service_name>
+      <end_competition_service_name>/ariac/end_competition</end_competition_service_name>
+      <population_activate_topic>/ariac/populate_belt</population_activate_topic>
+      <conveyor_control_topic>/ariac/conveyor/control</conveyor_control_topic>
+      <submit_tray_service_name>/ariac/submit_tray</submit_tray_service_name>
+      <material_locations_service_name>/ariac/material_locations</material_locations_service_name>
+      <orders_topic>/ariac/orders</orders_topic>
+      <material_locations>
+        <material>
+          <type>tray</type>
+          <location>
+            <storage_unit>agv1_load_point</storage_unit>
+          </location>
+          <location>
+            <storage_unit>agv2_load_point</storage_unit>
+          </location>
+        </material>
+      </material_locations>
+
+    </plugin>
+
+
+  </world>
+</sdf>

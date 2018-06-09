@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <launch>
-
-  <!--<include file="$(find indoor_localization)/launch/jackal_world.launch" >
+ 
+   <!-- Start gazebo with robot -->
+   <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
     <arg name="config" value="front_laser"/>
     <arg name="gui" value="false"/> 
     <arg name="headless" value="true" />
-  </include>-->
+  </include>
 
-  <include file="$(find indoor_localization)/launch/simulation.launch" />
+  <!-- Start odom-only nav stack -->
+  <include file="$(find jackal_navigation)/launch/odom_navigation_demo.launch" > 
 
-  <include file="$(find indoor_localization)/launch/move_base.launch" />
-
-  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+  <!-- rosbridge (not needed for now since we are transmitting only over ROS-->
+  <!--<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
     <arg name="port" default="9090" />
     <arg name="address" default="localhost" />
     <arg name="ssl" default="false" />
@@ -28,7 +29,6 @@
     <arg name="authenticate" default="false" />
 
     <arg name="topics_glob" default="[*]" />
-<!--'/jackal_velocity_controller/odom' '/jackal_velocity_controller/cmd_vel' /front/scan /tf2_web_republisher/goal /tf2_web_republisher/cancel /tf2_web_republisher/feedback-->
     <arg name="services_glob" default="[*]" />
     <arg name="params_glob" default="[*]" />
     <arg name="bson_only_mode" default="false" />
@@ -36,9 +36,7 @@
 
 
   <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher" output="screen" />
-  <rosparam param="use_gui">true</rosparam>
-  <!--<node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />-->
-
+-->
   
 
 
