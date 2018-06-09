@@ -20,28 +20,19 @@ fi
 
 
 source ~/.bashrc
-sudo apt-fast -y install ros-kinetic-turtlebot ros-kinetic-turtlebot ros-kinetic-turtlebot-gazebo
-sudo apt-fast -y install ros-kinetic-turtlebot-apps ros-kinetic-turtlebot-rviz-launchers
-sudo apt-fast -y install ros-kinetic-rosbridge-suite ros-kinetic-navigation
+sudo apt-fast -y install ros-kinetic-rosbridge-suite
 
 
 # external dependencies
-cd ~/
-git clone https://bitbucket.org/gtborg/gtsam/
-mkdir -p ~/gtsam/build && cd ~/gtsam/build
-cmake -DGTSAM_INSTALL_GEOGRAPHICLIB=ON -DGTSAM_WITH_EIGEN_MKL=OFF ..
-make -j8
-sudo make install
 
 # ROS dependencies
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://bitbucket.org/osrf/ariac -b ariac_2017
-git clone https://github.com/AutoRally/autorally
+# clone any catkin packages here
 cd ..
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 catkin install
-catkin build --cmake-args=-DGTSAM_WITH_EIGEN_MKL=OFF
+catkin build 
 
 USER_SOURCE_SCRIPT="source ~/catkin_ws/install/setup.bash"
 if grep -qF "$USER_SOURCE_SCRIPT" BASHRC;then
@@ -49,15 +40,6 @@ if grep -qF "$USER_SOURCE_SCRIPT" BASHRC;then
 else
    echo "Adding user setup.bash to bashrc"
    echo $USER_SOURCE_SCRIPT >> $BASHRC
-fi
-
-# export variables
-POSE="ROBOT_INITIAL_POSE=\"-x 9 -y 2 -z 0 -R 0 -P 0 -Y 3.14\""
-if grep -qF "$POSE" BASHRC;then
-   echo "robot initial exists"
-else
-   echo "Adding robot initial pose to bashrc"
-   echo $POSE >> $BASHRC
 fi
 
 IP="ROS_IP=192.168.0.0" # replace with your computer IP where you will install this script

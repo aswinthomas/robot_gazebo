@@ -15,10 +15,9 @@ git clone https://github.com/aswinthomas/robot_gazebo_install
 
 ```roslaunch server_services.launch```
 
-## Running a web browser client on the robot
+## Running rviz on the operator console
 
-Open operator.html in a browser
+- Do the same steps as above and run ```./install.bash```
+- Open rviz by doing ```rosrun rviz rviz``` and open the configuration robot.rviz in robot_gazebo_install folder
 
-## Running a web browser client on your host (user/operator)
 
-WIP
