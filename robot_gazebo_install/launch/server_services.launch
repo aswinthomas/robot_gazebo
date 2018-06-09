@@ -2,14 +2,14 @@
 <launch>
  
    <!-- Start gazebo with robot -->
-   <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
+  <include file="$(find jackal_gazebo)/launch/jackal_world.launch" >
     <arg name="config" value="front_laser"/>
     <arg name="gui" value="false"/> 
     <arg name="headless" value="true" />
   </include>
 
   <!-- Start odom-only nav stack -->
-  <include file="$(find jackal_navigation)/launch/odom_navigation_demo.launch" > 
+  <include file="$(find jackal_navigation)/launch/odom_navigation_demo.launch" /> 
 
   <!-- rosbridge (not needed for now since we are transmitting only over ROS-->
   <!--<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
