@@ -44,7 +44,7 @@ else
    echo $USER_SOURCE_SCRIPT >> $BASHRC
 fi
 
-IP="ROS_IP=192.168.0.0" # replace with your computer IP where you will install this script
+IP="ROS_IP=" # replace with your computer IP where you will install this script
 if grep -qF "$POSE" $BASHRC;then
    echo "ROS_IP exists"
 else
@@ -52,7 +52,7 @@ else
    echo $POSE >> $BASHRC
 fi
 
-URI="ROS_MASTER_URI=http://192.168.0.0:11311/" # replace with robot IP
+URI="ROS_MASTER_URI=" # replace with robot IP
 if grep -qF "$URI" $BASHRC;then
    echo "robot uri exists"
 else
