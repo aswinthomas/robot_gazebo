@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+ 
+  <!-- rviz -->
+  <arg name="rviz"    default="true" />
+  <arg name="rviz_file" default="$(find robot_gazebo_install)/rviz/robot.rviz" />
+  <node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d $(arg rviz_file)" output="screen" if="$(arg rviz)"/>
+
+  <node pkg="robot_gazebo_install" type="visualization" name="visualization" output="screen" />
+
+</launch>
+

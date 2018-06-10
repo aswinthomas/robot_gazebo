@@ -19,6 +19,6 @@ cd robot_gazebo_install && ./install.bash
 ## Running rviz on the operator console
 
 - Do the same steps as above and run ```./install.bash```
-- Open rviz by doing ```rosrun rviz rviz``` and open the configuration robot.rviz in robot_gazebo_install folder
+- Then ```roslaunch client_services.launch```
 
 
