@@ -22,3 +22,4 @@ cd robot_gazebo_install && ./install.bash
 - Then ```roslaunch client_services.launch```
 
 
+## Test
