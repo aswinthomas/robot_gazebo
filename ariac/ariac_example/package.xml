@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ariac_example</name>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <description>An example of an ARIAC competitor's package.</description>
   <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
 
